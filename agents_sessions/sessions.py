@@ -174,4 +174,57 @@ async def main2():
 
     check_data_in_db()
 
-asyncio.run(main2())
+
+# ----------------------------------------------------------------------------------------------#
+# Context Compaction
+# Re-define our app with Events Compaction enabled
+research_app_compacting = App(
+    name="research_app_compacting",
+    root_agent=chatbot_agent,
+    # This is the new part!
+    events_compaction_config=EventsCompactionConfig(
+        compaction_interval=3,  # Trigger compaction every 3 invocations
+        overlap_size=1,  # Keep 1 previous turn for context
+    ),
+)
+
+db_url = "sqlite:///my_agent_data.db"  # Local SQLite file
+session_service = DatabaseSessionService(db_url=db_url)
+
+# Create a new runner for our upgraded app
+research_runner_compacting = Runner(
+    app=research_app_compacting, session_service=session_service
+)
+
+
+async def main3():
+    # Turn 1
+    await run_session(
+        research_runner_compacting,
+        "What is the latest news about AI in healthcare?",
+        "compaction_demo",
+    )
+
+    # Turn 2
+    await run_session(
+        research_runner_compacting,
+        "Are there any new developments in drug discovery?",
+        "compaction_demo",
+    )
+
+    # Turn 3 - Compaction should trigger after this turn!
+    await run_session(
+        research_runner_compacting,
+        "Tell me more about the second development you found.",
+        "compaction_demo",
+    )
+
+    # Turn 4
+    await run_session(
+        research_runner_compacting,
+        "Who are the main companies involved in that?",
+        "compaction_demo",
+    )
+
+
+asyncio.run(main3())
