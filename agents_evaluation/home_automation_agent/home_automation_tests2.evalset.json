@@ -1,0 +1,78 @@
+{
+  "eval_set_id": "home_automation_tests2",
+  "name": "home_automation_tests2",
+  "eval_cases": [
+    {
+      "eval_id": "basic_automation",
+      "conversation": [
+        {
+          "invocation_id": "e-7446405e-2855-4a18-85c2-e0864db25794",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Turn on the desk lamp in the office"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "The desk lamp in the office has been turned on."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "home_automation_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-6f4f930f-f6ad-47e3-ac84-f6f24f64fa7c",
+                        "args": {
+                          "location": "office",
+                          "status": "ON",
+                          "device_id": "desk_lamp"
+                        },
+                        "name": "set_device_status"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "home_automation_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-6f4f930f-f6ad-47e3-ac84-f6f24f64fa7c",
+                        "name": "set_device_status",
+                        "response": {
+                          "success": true,
+                          "message": "Successfully set the desk_lamp in office to on."
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1763966498.606291
+        }
+      ],
+      "session_input": {
+        "app_name": "home_automation_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1763966582.308864
+    }
+  ],
+  "creation_timestamp": 1763966572.9942532
+}
